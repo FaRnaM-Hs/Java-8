@@ -29,12 +29,16 @@ public class FirstClassCitizenFunctionShould {
     void be_passed_as_value_to_a_variable() {
         Comparator<String> variable = (a, b) -> a.compareTo(b);
 
+        Collections.sort(players, variable);
+
         assertPlayersSort(players);
     }
 
     @Test
     void be_returned_from_a_method() {
         Comparator<String> variable = getPlayerComparator();
+
+        Collections.sort(players, variable);
 
         assertPlayersSort(players);
     }
