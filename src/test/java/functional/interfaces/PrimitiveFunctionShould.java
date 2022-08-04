@@ -24,11 +24,24 @@ public class PrimitiveFunctionShould {
 
     @Test
     void return_a_primitive_type_given_any_type() {
-        ToIntFunction<String> toIntFunction = string -> Integer.valueOf(string).intValue();
+        ToIntFunction<String> toIntFunction = Integer::valueOf;
         int stringToInt = toIntFunction.applyAsInt("5");
         Assertions.assertThat(stringToInt).isEqualTo(5);
 
-        // ToDoubleFunction<Integer> toDoubleFunction;
-        // ToLongFunction<Double> toLongFunction;
+//         ToDoubleFunction<Integer> toDoubleFunction;
+//         ToLongFunction<Double> toLongFunction;
+    }
+
+    @Test
+    void give_a_primitive_type_as_input_and_output() {
+        IntToLongFunction intToLongFunction = Long::valueOf;
+        long result = intToLongFunction.applyAsLong(1);
+        Assertions.assertThat(result).isEqualTo(1L);
+
+//        IntToDoubleFunction intToDoubleFunction;
+//        DoubleToIntFunction doubleToIntFunction;
+//        DoubleToLongFunction doubleToLongFunction;
+//        LongToIntFunction longToIntFunction;
+//        LongToDoubleFunction longToDoubleFunction;
     }
 }
