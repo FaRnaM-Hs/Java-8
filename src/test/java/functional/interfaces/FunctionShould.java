@@ -9,7 +9,6 @@ import java.util.function.Function;
 
 public class FunctionShould {
 
-
     @Test
     void get_an_entry_and_produce_an_output() {
         Map<String, Integer> map = new HashMap<>();
