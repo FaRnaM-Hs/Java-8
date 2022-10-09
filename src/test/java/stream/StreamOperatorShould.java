@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -27,8 +28,10 @@ public class StreamOperatorShould {
     void filter_data() {
         Predicate<? super Player> topScorer = player -> player.getGoal() > 100;
         Predicate<? super Player> nameIsAli = player -> player.getName().contains("Ali");
+        Consumer<? super Player> sideEffect = System.out::println;
         final List<Player> topScorersWhichNameContainsAli = players.stream()
                 .filter(topScorer)
+                .peek(sideEffect)
                 .filter(nameIsAli)
                 .distinct() // removes duplicated datas
                 .collect(toList());
