@@ -29,6 +29,7 @@ public class StreamOperatorShould {
         final List<Player> topScorersWhichNameContainsAli = players.stream()
                 .filter(topScorer)
                 .filter(nameIsAli)
+                .distinct() // removes duplicated datas
                 .collect(toList());
 
         final List<Player> aliDaei = new LinkedList<>();
@@ -41,6 +42,7 @@ public class StreamOperatorShould {
         Function<? super Player, ?> function = Player::getName;
         final List<?> playersNames = players.stream()
                 .map(function)
+                .distinct() // removes duplicated datas
                 .collect(toList());
 
         final List<String> expectedResult = new LinkedList<>();
