@@ -31,7 +31,7 @@ public class StreamOperatorShould {
         Consumer<? super Player> sideEffect = System.out::println;
         final List<Player> topScorersWhichNameContainsAli = players.stream()
                 .filter(topScorer)
-                .peek(sideEffect)
+                .peek(sideEffect) // creates Side Effect
                 .filter(nameIsAli)
                 .distinct() // removes duplicated datas
                 .collect(toList());
@@ -62,6 +62,7 @@ public class StreamOperatorShould {
         final List<Integer> sortedScoredGoals = players.stream()
                 .map(Player::getGoal)
                 .sorted()
+                .limit(3) // first 3 elements
                 .collect(toList());
 
 
@@ -69,22 +70,34 @@ public class StreamOperatorShould {
         expectedResult.add(84);
         expectedResult.add(89);
         expectedResult.add(109);
-        expectedResult.add(109);
-        expectedResult.add(115);
+        /*expectedResult.add(109);
+        expectedResult.add(115);*/
         assertThat(sortedScoredGoals).isEqualTo(expectedResult);
 
 
         final List<Integer> reversedSortedScoredGoals = players.stream()
                 .map(Player::getGoal)
                 .sorted(Collections.reverseOrder())
+                .skip(3) // skips 3 first elements
                 .collect(toList());
 
         final List<Integer> expectedResult_2 = new LinkedList<>();
-        expectedResult_2.add(115);
+        /*expectedResult_2.add(115);
         expectedResult_2.add(109);
-        expectedResult_2.add(109);
+        expectedResult_2.add(109);*/
         expectedResult_2.add(89);
         expectedResult_2.add(84);
         assertThat(reversedSortedScoredGoals).isEqualTo(expectedResult_2);
+
+        final List<Integer> fourthReversedSortedScoredGoals = players.stream()
+                .map(Player::getGoal)
+                .sorted(Collections.reverseOrder())
+                .skip(3) // skips 3 first elements
+                .limit(1) // then pick the 4th element
+                .collect(toList());
+
+        final List<Integer> expectedResult_3 = new LinkedList<>();
+        expectedResult_3.add(89);
+        assertThat(fourthReversedSortedScoredGoals).isEqualTo(expectedResult_3);
     }
 }
