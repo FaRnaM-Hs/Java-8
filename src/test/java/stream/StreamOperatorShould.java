@@ -5,6 +5,7 @@ import helper.PlayerTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
@@ -51,5 +52,36 @@ public class StreamOperatorShould {
         expectedResult.add("Ferenc Puskás");
         expectedResult.add("Mokhtar Dahari");
         assertThat(playersNames).isEqualTo(expectedResult);
+    }
+
+    @Test
+    void sort_data() {
+        final List<Integer> sortedScoredGoals = players.stream()
+                .map(Player::getGoal)
+                .sorted()
+                .collect(toList());
+
+
+        final List<Integer> expectedResult = new LinkedList<>();
+        expectedResult.add(84);
+        expectedResult.add(89);
+        expectedResult.add(109);
+        expectedResult.add(109);
+        expectedResult.add(115);
+        assertThat(sortedScoredGoals).isEqualTo(expectedResult);
+
+
+        final List<Integer> reversedSortedScoredGoals = players.stream()
+                .map(Player::getGoal)
+                .sorted(Collections.reverseOrder())
+                .collect(toList());
+
+        final List<Integer> expectedResult_2 = new LinkedList<>();
+        expectedResult_2.add(115);
+        expectedResult_2.add(109);
+        expectedResult_2.add(109);
+        expectedResult_2.add(89);
+        expectedResult_2.add(84);
+        assertThat(reversedSortedScoredGoals).isEqualTo(expectedResult_2);
     }
 }
