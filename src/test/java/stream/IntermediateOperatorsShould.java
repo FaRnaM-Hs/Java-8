@@ -15,7 +15,7 @@ import java.util.function.Predicate;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class StreamOperatorShould {
+public class IntermediateOperatorsShould {
 
     private List<Player> players;
 
