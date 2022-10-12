@@ -12,7 +12,6 @@ import java.util.function.Function;
 import java.util.function.ToIntFunction;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class TerminalOperatorsShould {
 
@@ -80,5 +79,19 @@ public class TerminalOperatorsShould {
         Assertions.assertThat(summary.getMax()).isEqualTo(115);
         Assertions.assertThat(summary.getMin()).isEqualTo(84);
         Assertions.assertThat(summary.getCount()).isEqualTo(5);
+    }
+
+    @Test
+    void group_data() {
+        Function<Player, String> playerName = Player::getName;
+        Map<String, Long> groupedPlayers = players.stream()
+                .collect(Collectors.groupingBy(playerName, Collectors.counting()));
+        groupedPlayers.forEach((k, v) -> System.out.println("Player is " + k + " and has " + v + " occurrences"));
+
+        Assertions.assertThat(groupedPlayers)
+                .containsEntry("Ali Daei", 2L)
+                .containsEntry("Cristiano Ronaldo", 1L)
+                .containsEntry("Ferenc Puskás", 1L)
+                .containsEntry("Mokhtar Dahari", 1L);
     }
 }
