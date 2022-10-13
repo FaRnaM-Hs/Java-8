@@ -94,6 +94,33 @@ public class TerminalOperatorsShould {
     }
 
     @Test
+    void match_data() {
+        // All match
+        Predicate<Integer> moreThan50Goals = goals -> goals > 50;
+        boolean allPlayersScoredMoreThan50 = players.stream()
+                .map(Player::getGoal)
+                .allMatch(moreThan50Goals);
+
+        assertThat(allPlayersScoredMoreThan50).isTrue();
+
+        // Any match
+        Predicate<Integer> moreThan100Goals = goals -> goals > 100;
+        boolean anyPlayerScoredMoreThan100 = players.stream()
+                .map(Player::getGoal)
+                .anyMatch(moreThan100Goals);
+
+        assertThat(anyPlayerScoredMoreThan100).isTrue();
+
+        // None match
+        Predicate<Integer> noGoals = goals -> goals == 0;
+        boolean nonePlayerScoredNoGoals = players.stream()
+                .map(Player::getGoal)
+                .noneMatch(noGoals);
+
+        assertThat(nonePlayerScoredNoGoals).isTrue();
+    }
+
+    @Test
     void reduce_data() {
         BinaryOperator<Integer> sumOfGoals = Integer::sum;
         final Integer totalGoals = players.stream().map(Player::getGoal).reduce(0, sumOfGoals);
