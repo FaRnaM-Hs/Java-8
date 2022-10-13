@@ -2,16 +2,14 @@ package stream;
 
 import football.player.Player;
 import helper.PlayerTestHelper;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
-import java.util.function.ToIntFunction;
-import java.util.function.UnaryOperator;
+import java.util.function.*;
 import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class TerminalOperatorsShould {
 
@@ -31,8 +29,8 @@ public class TerminalOperatorsShould {
         BiConsumer<UUID, Player> printPlayers = (k, v) -> System.out.println("Key is: " + k + " Value is: " + v);
         playersWithID.forEach(printPlayers);
 
-        Assertions.assertThat(playersWithID.values()).hasSameElementsAs(players);
-        Assertions.assertThat(playersWithID.keySet()).hasOnlyElementsOfType(UUID.class);
+        assertThat(playersWithID.values()).hasSameElementsAs(players);
+        assertThat(playersWithID.keySet()).hasOnlyElementsOfType(UUID.class);
     }
 
     @Test
@@ -44,41 +42,41 @@ public class TerminalOperatorsShould {
                 .mapToInt(intConverter)
                 .sum();
 
-        Assertions.assertThat(sum).isEqualTo(506);
+        assertThat(sum).isEqualTo(506);
 
         final Double average = players.stream()
                 .map(Player::getGoal)
                 .collect(Collectors.averagingInt(intConverter));
 
-        Assertions.assertThat(average).isEqualTo(101.2);
+        assertThat(average).isEqualTo(101.2);
 
         final Optional<Integer> max = players.stream()
                 .map(Player::getGoal)
                 .max(Comparator.naturalOrder());
 
-        Assertions.assertThat(max.get()).isEqualTo(115);
+        assertThat(max.get()).isEqualTo(115);
 
         final Optional<Integer> min = players.stream()
                 .map(Player::getGoal)
                 .min(Comparator.naturalOrder());
 
-        Assertions.assertThat(min.get()).isEqualTo(84);
+        assertThat(min.get()).isEqualTo(84);
 
         final Long numberOfPlayers = players.stream()
                 .map(Player::getGoal)
                 .count();
 
-        Assertions.assertThat(numberOfPlayers).isEqualTo(5);
+        assertThat(numberOfPlayers).isEqualTo(5);
 
         final IntSummaryStatistics summary = players.stream()
                 .map(Player::getGoal)
                 .collect(Collectors.summarizingInt(intConverter));
 
-        Assertions.assertThat(summary.getSum()).isEqualTo(506);
-        Assertions.assertThat(summary.getAverage()).isEqualTo(101.2);
-        Assertions.assertThat(summary.getMax()).isEqualTo(115);
-        Assertions.assertThat(summary.getMin()).isEqualTo(84);
-        Assertions.assertThat(summary.getCount()).isEqualTo(5);
+        assertThat(summary.getSum()).isEqualTo(506);
+        assertThat(summary.getAverage()).isEqualTo(101.2);
+        assertThat(summary.getMax()).isEqualTo(115);
+        assertThat(summary.getMin()).isEqualTo(84);
+        assertThat(summary.getCount()).isEqualTo(5);
     }
 
     @Test
@@ -88,10 +86,29 @@ public class TerminalOperatorsShould {
                 .collect(Collectors.groupingBy(playerName, Collectors.counting()));
         groupedPlayers.forEach((k, v) -> System.out.println("Player is " + k + " and has " + v + " occurrences"));
 
-        Assertions.assertThat(groupedPlayers)
+        assertThat(groupedPlayers)
                 .containsEntry("Ali Daei", 2L)
                 .containsEntry("Cristiano Ronaldo", 1L)
                 .containsEntry("Ferenc Puskás", 1L)
                 .containsEntry("Mokhtar Dahari", 1L);
+    }
+
+    @Test
+    void reduce_data() {
+        BinaryOperator<Integer> sumOfGoals = Integer::sum;
+        final Integer totalGoals = players.stream().map(Player::getGoal).reduce(0, sumOfGoals);
+
+        assertThat(totalGoals).isEqualTo(506);
+
+        final String formattedNames = players.stream()
+                .map(Player::getName)
+                .reduce("", this::format)
+                .substring(3);
+
+        assertThat(formattedNames).isEqualTo("Ali DAEI | Ali DAEI | Cristiano RONALDO | Ferenc PUSKÁS | Mokhtar DAHARI");
+    }
+
+    private String format(String result, String playerName) {
+        return result + " | " + playerName.split(" ")[0] + " " + playerName.split(" ")[1].toUpperCase();
     }
 }
