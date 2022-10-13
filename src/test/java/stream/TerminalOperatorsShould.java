@@ -121,6 +121,26 @@ public class TerminalOperatorsShould {
     }
 
     @Test
+    void find_data() {
+        Optional<String> firstScorerLessThan100Goals = players.stream()
+                .filter(player -> player.getGoal() < 100)
+                .map(Player::getName)
+                .findFirst();
+
+        assertThat(firstScorerLessThan100Goals.get()).isEqualTo("Ferenc Puskás");
+
+        Optional<String> anyScorerLessThan100Goals = players.stream()
+                .filter(player -> player.getGoal() < 100)
+                .map(Player::getName)
+                .findAny();
+
+        assertThat(anyScorerLessThan100Goals.get()).satisfiesAnyOf(
+                player -> player.equals("Ferenc Puskás"),
+                player -> player.equals("Mokhtar Dahari")
+        );
+    }
+
+    @Test
     void reduce_data() {
         BinaryOperator<Integer> sumOfGoals = Integer::sum;
         final Integer totalGoals = players.stream().map(Player::getGoal).reduce(0, sumOfGoals);
