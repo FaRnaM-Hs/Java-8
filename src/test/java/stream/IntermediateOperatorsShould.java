@@ -100,4 +100,17 @@ public class IntermediateOperatorsShould {
         expectedResult_3.add(89);
         assertThat(fourthReversedSortedScoredGoals).isEqualTo(expectedResult_3);
     }
+
+    @Test
+    void be_lazy() {
+        List<Integer> goals = players.stream()
+                .map(Player::getGoal)
+                .peek(goal -> System.out.println("Before filter" + " " + goal)) // will run
+                .filter(goal -> goal < 50) // won't run anything after this filter
+                .peek(goal -> System.out.println("After filter" + " " + goal)) // won't run
+                .map(goal -> goal * 2) // won't run
+                .collect(toList());
+
+        assertThat(goals).isEmpty();
+    }
 }
