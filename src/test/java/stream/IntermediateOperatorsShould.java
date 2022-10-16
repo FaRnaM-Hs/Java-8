@@ -1,10 +1,12 @@
 package stream;
 
 import football.player.Player;
+import football.player.PlayersWithCups;
 import helper.PlayerTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -55,6 +57,25 @@ public class IntermediateOperatorsShould {
         expectedResult.add("Ferenc Puskás");
         expectedResult.add("Mokhtar Dahari");
         assertThat(playersNames).isEqualTo(expectedResult);
+    }
+
+    @Test
+    void handle_complex_objects() {
+        List<PlayersWithCups> playersWithCups = new PlayerTestHelper().getPlayersWithCups();
+
+        List<List<String>> byMap = playersWithCups.stream()
+                .filter(pwc -> pwc.getName().contains("Ali"))
+                .map(PlayersWithCups::getCups)
+                .collect(toList());
+
+        assertThat(byMap).contains(Arrays.asList("Bundes Liga", "Azadegan"));
+
+        List<String> byFlatMap = playersWithCups.stream()
+                .filter(pwc -> pwc.getName().contains("Ali"))
+                .flatMap(p -> p.getCups().stream())
+                .collect(toList());
+
+        assertThat(byFlatMap).contains("Bundes Liga", "Azadegan");
     }
 
     @Test
