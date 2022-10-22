@@ -37,12 +37,33 @@ public class OptionalShould {
     void be_created() {
         String name = "Farnam";
 
-        Assertions.assertThat(Optional.of(name).get()).isEqualTo("Farnam");
+        assertThat(Optional.of(name).get()).isEqualTo("Farnam");
 
         String nullName = null;
 
-        Assertions.assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> Optional.of(nullName));
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> Optional.of(nullName));
 
-        Assertions.assertThat(Optional.ofNullable(nullName)).isEmpty();
+        assertThat(Optional.ofNullable(nullName)).isEmpty();
+    }
+
+
+    @Test
+    void have_default_values() {
+        String name = "Farnam";
+
+        System.out.println("orElse :");
+        String result = Optional.ofNullable(name).orElse(getDefaultName()); // calls the method anyway
+        System.out.println(result);
+        assertThat(result).isEqualTo("Farnam");
+
+        System.out.println("orElseGet :");
+        result = Optional.ofNullable(name).orElseGet(this::getDefaultName); // calls the method if the object is null
+        System.out.println(result);
+        assertThat(result).isEqualTo("Farnam");
+    }
+
+    private String getDefaultName() {
+        System.out.println("Default name called");
+        return "None";
     }
 }
