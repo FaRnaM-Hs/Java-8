@@ -62,6 +62,14 @@ public class OptionalShould {
         assertThat(result).isEqualTo("Farnam");
     }
 
+    @Test
+    void handle_errors() {
+       String name = null;
+
+       assertThatExceptionOfType(IllegalArgumentException.class)
+               .isThrownBy(() -> Optional.ofNullable(name).orElseThrow(IllegalArgumentException::new));
+    }
+
     private String getDefaultName() {
         System.out.println("Default name called");
         return "None";
