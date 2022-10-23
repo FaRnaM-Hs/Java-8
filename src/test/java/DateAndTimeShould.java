@@ -1,4 +1,6 @@
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import time.DateAndTime;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,8 +18,15 @@ public class DateAndTimeShould {
         System.out.println(date);
 
         // From Java 8 :
-        LocalDateTime now = LocalDateTime.now();
-        System.out.println(now);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        System.out.println(localDateTime);
+        LocalDate localDate = LocalDate.now();
+        System.out.println(localDate);
+        LocalTime localTime = LocalTime.now();
+        System.out.println(localTime);
+
+        LocalDateTime aFutureTime = LocalDateTime.of(2033, 10, 23, 16, 42);
+        Assertions.assertThat(aFutureTime).isAfter(localDateTime);
     }
 
     @Test
@@ -31,5 +40,18 @@ public class DateAndTimeShould {
         // From Java 8 :
         LocalDateTime fiveHoursAgo = LocalDateTime.now().minusHours(5);
         System.out.println(fiveHoursAgo);
+    }
+
+    @Test
+    void determine_if_a_day_is_in_weekend() {
+        DateAndTime dateAndTime = new DateAndTime();
+        LocalDate sunday = LocalDate.of(2022, 10, 23);
+        LocalDate monday = LocalDate.of(2022, 10, 24);
+
+        boolean weekend = dateAndTime.isWeekend(sunday);
+        boolean notWeekend = dateAndTime.isWeekend(monday);
+
+        Assertions.assertThat(weekend).isTrue();
+        Assertions.assertThat(notWeekend).isFalse();
     }
 }
