@@ -2,9 +2,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import time.DateAndTime;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -53,5 +51,21 @@ public class DateAndTimeShould {
 
         Assertions.assertThat(weekend).isTrue();
         Assertions.assertThat(notWeekend).isFalse();
+    }
+
+
+    @Test
+    void get_new_york_time() {
+        ZonedDateTime tehranTime = ZonedDateTime.now();
+        System.out.println(tehranTime.toLocalDateTime());
+        System.out.println(ZoneId.getAvailableZoneIds());
+        ZonedDateTime newYorkTime = tehranTime.withZoneSameInstant(ZoneId.of("America/New_York"));
+        System.out.println(newYorkTime.toLocalDateTime());
+
+        OffsetDateTime now = OffsetDateTime.now();
+        System.out.println(now.toLocalDateTime());
+        System.out.println(ZoneOffset.getAvailableZoneIds());
+        OffsetDateTime newYorkTimeWithOffset = now.withOffsetSameInstant(ZoneOffset.of("-04:00"));
+        System.out.println(newYorkTimeWithOffset.toLocalDateTime());
     }
 }
