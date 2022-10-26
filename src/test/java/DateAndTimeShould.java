@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 import time.DateAndTime;
 
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -67,5 +68,12 @@ public class DateAndTimeShould {
         System.out.println(ZoneOffset.getAvailableZoneIds());
         OffsetDateTime newYorkTimeWithOffset = now.withOffsetSameInstant(ZoneOffset.of("-04:00"));
         System.out.println(newYorkTimeWithOffset.toLocalDateTime());
+    }
+
+    @Test
+    void change_date_format() {
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(now.format(DateTimeFormatter.ISO_ORDINAL_DATE));
+        System.out.println(now.format(DateTimeFormatter.ofPattern("yy/MM/dd")));
     }
 }
