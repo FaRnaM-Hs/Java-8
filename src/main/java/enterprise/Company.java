@@ -1,6 +1,8 @@
 package enterprise;
 
-interface Company {
+public interface Company {
+
+    double DEFAULT_TAX_PERCENTAGE = 0.1;
 
     default double calculateTax(double annualTurnover) {
         return annualTurnover * getTaxPercentage();
