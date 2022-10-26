@@ -76,4 +76,21 @@ public class DateAndTimeShould {
         System.out.println(now.format(DateTimeFormatter.ISO_ORDINAL_DATE));
         System.out.println(now.format(DateTimeFormatter.ofPattern("yy/MM/dd")));
     }
+
+    @Test
+    void compare_dates() {
+        final LocalDateTime now = LocalDateTime.now();
+        final LocalDateTime nowPlusFiveDays = now.plusDays(5);
+
+        Duration duration = Duration.between(now, nowPlusFiveDays);
+
+        Assertions.assertThat(duration).isEqualTo(Duration.ofDays(5));
+
+        final LocalDate nowDate = LocalDate.now();
+        final LocalDate nowDatePlusFiveDays = nowDate.plusDays(5);
+
+        Period period = Period.between(nowDate, nowDatePlusFiveDays);
+
+        Assertions.assertThat(period.getDays()).isEqualTo(5);
+    }
 }
