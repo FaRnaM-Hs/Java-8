@@ -1,3 +1,5 @@
+package time;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import time.DateAndTime;
